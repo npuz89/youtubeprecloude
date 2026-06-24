@@ -4,20 +4,25 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '>=3.3.0 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  youtube_player_flutter: ^9.0.2
+  # YouTube плеер
+  youtube_player_flutter: ^9.1.1
+  # Не даёт экрану гаснуть
   wakelock_plus: ^1.2.8
+  # Настройка аудио-сессии (фоновый звук iOS/Android)
   audio_session: ^0.1.21
-  flutter_background: ^1.2.0
+  # Foreground service — современная замена flutter_background
+  # Не тянет устаревший package_info_plus
+  flutter_foreground_task: ^8.14.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
 
 flutter:
   uses-material-design: true
