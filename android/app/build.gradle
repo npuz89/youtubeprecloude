@@ -1,14 +1,22 @@
-// === ХАК ДЛЯ GITHUB ACTIONS: Принудительно задаем путь к исходникам Flutter до старта плагинов ===
+// АВТОГЕНЕРАЦИЯ LOCAL.PROPERTIES ДЛЯ CI/CD
 buildscript {
-    def projectRoot = rootProject.file('../').absolutePath
-    ext.flutter_provider_localSourceDir = projectRoot
-    System.setProperty("flutter.provider.localSourceDir", projectRoot)
+    def repoRoot = rootProject.file('../').absolutePath
+    def flutterSdk = System.getenv("FLUTTER_ROOT") ?: ""
+    
+    // На сервере GitHub Actions создаем local.properties принудительно
+    def localPropsFile = rootProject.file('local.properties')
+    if (!localPropsFile.exists() && flutterSdk != "") {
+        localPropsFile.write("flutter.sdk=${flutterSdk}\n")
+    }
+    
+    // Дополнительно прокидываем во внутреннее свойство плагина
+    System.setProperty("flutter.provider.localSourceDir", repoRoot)
 }
 
 plugins {
     id "com.android.application"
     id "kotlin-android"
-    id "dev.flutter.flutter-gradle-plugin" // Теперь этот плагин инициализируется без ошибок
+    id "dev.flutter.flutter-gradle-plugin" // Теперь файл local.properties уже существует, и плагин инициализируется успешно!
 }
 
 def localProperties = new Properties()
@@ -21,11 +29,10 @@ if (localPropertiesFile.exists()) {
 
 def flutterRoot = localProperties.getProperty('flutter.sdk')
 if (flutterRoot == null) {
-    // На CI/CD local.properties может отсутствовать, поэтому делаем фоллбек на переменную окружения
     flutterRoot = System.getenv("FLUTTER_ROOT")
 }
 if (flutterRoot == null) {
-    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in local.properties or FLUTTER_ROOT env variable.")
+    throw new GradleException("Flutter SDK not found.")
 }
 
 android {
