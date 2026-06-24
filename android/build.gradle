@@ -16,3 +16,19 @@ subprojects {
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
+
+// === ДОБАВЛЯЕМ ЭТОТ БЛОК В САМЫЙ КОНЕЦ ФАЙЛА ===
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty('android')) {
+            project.android {
+                // Если сторонний плагин не видит compileSdkVersion из-за нового Flutter SDK,
+                // мы жестко задаем ему версию 35 (как в твоем app/build.gradle)
+                compileSdkVersion 35
+                
+                // Также фиксируем версию buildTools, чтобы избежать других предупреждений
+                buildToolsVersion "35.0.0"
+            }
+        }
+    }
+}
