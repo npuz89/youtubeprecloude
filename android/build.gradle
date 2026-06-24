@@ -5,6 +5,20 @@ allprojects {
     }
 }
 
+// Глобальные значения SDK — фикс для старых плагинов,
+// которые читают flutter.compileSdkVersion через ext
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty("android")) {
+            android {
+                if (compileSdkVersion == null) {
+                    compileSdk 35
+                }
+            }
+        }
+    }
+}
+
 rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
