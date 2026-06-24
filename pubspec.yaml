@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   youtube_player_flutter: ^9.1.1
-  wakelock_plus: ^1.5.1  # Используем стабильную 1.5.x, она полностью поддерживает Dart 3.5.4 и новый Gradle
+  wakelock_plus: ^1.4.1  # Фиксируем на стабильной версии для Dart 3.5.x
   audio_session: ^0.1.25
   flutter_foreground_task: ^8.14.0
 
