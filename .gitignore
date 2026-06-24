@@ -1,0 +1,47 @@
+# Flutter/Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+*.iml
+
+# Android
+*.apk
+*.aab
+*.ap_
+*.class
+*.dex
+*.jar
+local.properties
+gen/
+out/
+captures/
+.externalNativeBuild/
+.cxx/
+*.orig.*
+/android/key.properties
+*.jks
+*.keystore
+
+# IntelliJ / Android Studio
+*.ipr
+*.iws
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# macOS
+.DS_Store
+
+# VS Code
+.vscode/
+
+# Misc
+*.log
+pubspec.lock
