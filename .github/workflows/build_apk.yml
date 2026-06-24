@@ -41,6 +41,13 @@ jobs:
       - name: Flutter version
         run: flutter --version
 
+      # === НОВЫЙ КРИТИЧЕСКИЙ ШАГ ДЛЯ НАСТРОЙКИ GRADLE ===
+      - name: Configure Flutter SDK Path for Gradle
+        run: |
+          mkdir -p android
+          echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
+          echo "sdk.dir=/usr/local/lib/android/sdk" >> android/local.properties
+
       - name: Get dependencies
         run: flutter pub get
 
