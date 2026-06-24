@@ -1,10 +1,15 @@
+// === ХАК ДЛЯ GITHUB ACTIONS: Принудительно задаем путь к исходникам Flutter до старта плагинов ===
+buildscript {
+    def projectRoot = rootProject.file('../').absolutePath
+    ext.flutter_provider_localSourceDir = projectRoot
+    System.setProperty("flutter.provider.localSourceDir", projectRoot)
+}
+
 plugins {
     id "com.android.application"
     id "kotlin-android"
-    id "dev.flutter.flutter-gradle-plugin"
+    id "dev.flutter.flutter-gradle-plugin" // Теперь этот плагин инициализируется без ошибок
 }
-
-// Блок flutter { ... } отсюда полностью удален!
 
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
@@ -16,7 +21,11 @@ if (localPropertiesFile.exists()) {
 
 def flutterRoot = localProperties.getProperty('flutter.sdk')
 if (flutterRoot == null) {
-    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+    // На CI/CD local.properties может отсутствовать, поэтому делаем фоллбек на переменную окружения
+    flutterRoot = System.getenv("FLUTTER_ROOT")
+}
+if (flutterRoot == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in local.properties or FLUTTER_ROOT env variable.")
 }
 
 android {
