@@ -4,6 +4,11 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
+// === ДОБАВЛЯЕМ ЭТОТ БЛОК СРАЗУ ПОСЛЕ PLUGINS ===
+flutter {
+    sourceDirectory = rootProject.file('../') 
+}
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -17,11 +22,10 @@ if (flutterRoot == null) {
     throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
 }
 
-
-
 android {
     namespace "com.example.youtube_bg_player"
     compileSdkVersion 35
+    // ... весь остальной твой код ниже без изменений
     ndkVersion "27.0.12077973"
 
     compileOptions {
