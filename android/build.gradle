@@ -3,6 +3,14 @@ allprojects {
         google()
         mavenCentral()
     }
+    // Прокидываем свойства, которые ищет wakelock_plus внутри своего build.gradle
+    ext {
+        flutter = [
+            compileSdkVersion: 35,
+            targetSdkVersion: 35,
+            minSdkVersion: 23
+        ]
+    }
 }
 
 rootProject.buildDir = "../build"
