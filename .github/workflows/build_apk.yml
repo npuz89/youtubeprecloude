@@ -1,0 +1,59 @@
+name: Build APK
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:   # позволяет запускать вручную из вкладки Actions
+
+jobs:
+  build:
+    name: Build Release APK
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Скачиваем код репозитория
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Устанавливаем Java (нужна для Android SDK)
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      # 3. Устанавливаем Flutter
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.22.0'
+          channel: 'stable'
+          cache: true
+
+      # 4. Выводим версию для проверки
+      - name: Flutter version info
+        run: flutter --version
+
+      # 5. Загружаем все зависимости (пакеты из pubspec.yaml)
+      - name: Get dependencies
+        run: flutter pub get
+
+      # 6. Собираем Release APK
+      - name: Build release APK
+        run: flutter build apk --release --no-shrink
+
+      # 7. Загружаем APK как артефакт (можно скачать после сборки)
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: youtube-bg-player-release
+          path: build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 30   # хранить 30 дней
+
+      # 8. Показываем размер APK
+      - name: Show APK info
+        run: |
+          echo "=== APK built successfully ==="
+          ls -lh build/app/outputs/flutter-apk/app-release.apk
